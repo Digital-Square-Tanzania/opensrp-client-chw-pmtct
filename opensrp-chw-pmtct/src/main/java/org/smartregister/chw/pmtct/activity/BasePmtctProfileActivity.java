@@ -14,6 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.pmtct.contract.PmtctProfileContract;
 import org.smartregister.chw.pmtct.custom_views.BasePmtctFloatingMenu;
@@ -32,10 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
@@ -78,6 +79,7 @@ public class BasePmtctProfileActivity extends BaseProfileActivity implements Pmt
     protected BasePmtctFloatingMenu basePmtctFloatingMenu;
     private TextView tvUpComingServices;
     private TextView tvFamilyStatus;
+    protected TextView manualProcessVisit;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
     private ProgressBar progressBar;
 
@@ -145,6 +147,7 @@ public class BasePmtctProfileActivity extends BaseProfileActivity implements Pmt
         view_baseline_results_row = findViewById(R.id.view_baseline_results_row);
         rlBaselineResults = findViewById(R.id.rlBaselineInvestigationResults);
         rlHvlResults = findViewById(R.id.rlHvlResults);
+        manualProcessVisit = findViewById(R.id.textview_manual_process);
 
         textViewVisitDoneEdit.setOnClickListener(this);
         textViewVisitDoneEdit.setVisibility(View.GONE);

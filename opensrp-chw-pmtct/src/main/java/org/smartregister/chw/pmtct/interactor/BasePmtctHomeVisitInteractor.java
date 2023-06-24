@@ -149,7 +149,8 @@ public class BasePmtctHomeVisitInteractor implements BasePmtctHomeVisitContract.
                 if (mode == BasePmtctHomeVisitAction.ProcessingMode.SEPARATE && StringUtils.isBlank(parentEventType)) {
                     externalVisits.put(entry.getKey(), entry.getValue());
                 } else {
-                    combinedJsons.put(entry.getKey(), json);
+                    if (action.getActionStatus() != BasePmtctHomeVisitAction.Status.PENDING)
+                        combinedJsons.put(entry.getKey(), json);
                 }
 
                 payloadType = action.getPayloadType().name();

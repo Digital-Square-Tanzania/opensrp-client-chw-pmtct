@@ -72,5 +72,8 @@
     <string name="medium_risk">Medium Risk</string>
     <string name="high_risk">High Risk</string>
     <string name="process_visit">Process Visit</string>
+    <string name="pmtct_visit_in_progress">Visit In Progress</string>
+    <string name="continue_visit">Continue</string>
+    <string name="manual_process_visit">Process Visit</string>
 
 </resources>
