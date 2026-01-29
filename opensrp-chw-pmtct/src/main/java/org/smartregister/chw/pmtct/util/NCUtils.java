@@ -11,7 +11,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
-import net.sqlcipher.database.SQLiteDatabase;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -323,30 +323,31 @@ public class NCUtils {
 
 
     // executed by event client processor
-    public static Visit eventToVisit(org.smartregister.domain.db.Event event) throws JSONException {
+    public static Visit eventToVisit(org.smartregister.domain.Event event) throws JSONException {
         List<String> exceptions = Arrays.asList(default_obs);
 
         Visit visit = new Visit();
-        visit.setVisitId(org.smartregister.chw.pmtct.util.JsonFormUtils.generateRandomUUIDString());
+        visit.setVisitId(JsonFormUtils.generateRandomUUIDString());
         visit.setBaseEntityId(event.getBaseEntityId());
         visit.setDate(event.getEventDate().toDate());
         visit.setVisitType(event.getEventType());
         visit.setEventId(event.getEventId());
         visit.setFormSubmissionId(event.getFormSubmissionId());
-        visit.setJson(new JSONObject(org.smartregister.chw.pmtct.util.JsonFormUtils.gson.toJson(event)).toString());
+        visit.setJson(new JSONObject(JsonFormUtils.gson.toJson(event)).toString());
         visit.setProcessed(true);
         visit.setCreatedAt(new Date());
         visit.setUpdatedAt(new Date());
         Map<String, String> eventDetails = event.getDetails();
-        if (eventDetails != null)
+        if (eventDetails != null) {
             visit.setVisitGroup(eventDetails.get(Constants.HOME_VISIT_GROUP));
+        }
 
         Map<String, List<VisitDetail>> details = new HashMap<>();
         if (event.getObs() != null) {
-            for (org.smartregister.domain.db.Obs obs : event.getObs()) {
+            for (org.smartregister.domain.Obs obs : event.getObs()) {
                 if (!exceptions.contains(obs.getFormSubmissionField())) {
                     VisitDetail detail = new VisitDetail();
-                    detail.setVisitDetailsId(org.smartregister.chw.pmtct.util.JsonFormUtils.generateRandomUUIDString());
+                    detail.setVisitDetailsId(JsonFormUtils.generateRandomUUIDString());
                     detail.setVisitId(visit.getVisitId());
                     detail.setVisitKey(obs.getFormSubmissionField());
                     detail.setParentCode(obs.getParentCode());
@@ -357,8 +358,9 @@ public class NCUtils {
                     detail.setUpdatedAt(new Date());
 
                     List<VisitDetail> currentList = details.get(detail.getVisitKey());
-                    if (currentList == null)
+                    if (currentList == null) {
                         currentList = new ArrayList<>();
+                    }
 
                     currentList.add(detail);
                     details.put(detail.getVisitKey(), currentList);
