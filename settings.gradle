@@ -1,1 +1,1 @@
-include ':sample', ':opensrp-chw-pmtct'
+include ':opensrp-chw-pmtct'
