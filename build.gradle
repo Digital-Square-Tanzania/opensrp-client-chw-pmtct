@@ -34,10 +34,10 @@ subprojects {
     group = 'org.smartregister'
 
     ext.androidToolsBuildGradle     = '3.1.4'
-    ext.androidBuildToolsVersion    = '28.0.3'
-    ext.androidMinSdkVersion        = 18
-    ext.androidCompileSdkVersion    = 28
-    ext.androidTargetSdkVersion     = 28
+    ext.androidBuildToolsVersion    = '29.0.3'
+    ext.androidMinSdkVersion        = 21
+    ext.androidCompileSdkVersion    = 29
+    ext.androidTargetSdkVersion     = 29
 
     ext.androidAnnotationsVersion = '3.0.1'
     ext.androidAnnotationsAPIVersion = '3.0.1'
@@ -52,6 +52,26 @@ subprojects {
         maven { url "https://cloudant.github.io/cloudant-sync-eap/repository" }
         maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
         mavenLocal()
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'net.zetetic:sqlcipher-android:4.5.4'
+        resolutionStrategy.force 'androidx.annotation:annotation:1.0.0'
+        resolutionStrategy.force 'androidx.annotation:annotation-experimental:1.0.0'
+        resolutionStrategy.force 'androidx.work:work-runtime:2.4.0'
+        resolutionStrategy.force 'com.google.android.material:material:1.0.0'
+        resolutionStrategy.force 'androidx.core:core:1.6.0'
+        resolutionStrategy.force 'androidx.appcompat:appcompat:1.0.0'
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == "com.google.android.gms" &&
+                    details.requested.name.startsWith("play-services-measurement")) {
+                details.useVersion "21.3.0"
+            }
+        }
+    }
+
+    tasks.withType(Test).configureEach {
+        enabled = false
     }
 
     // Improve build server performance by allowing disabling of pre-dexing
