@@ -11,6 +11,11 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
 
     }
 
@@ -54,10 +59,16 @@ android {
 
 }
 
+def githubProperties = new Properties()
+if (file("github.properties").exists()) {
+    githubProperties.load(new FileInputStream(file("github.properties")))
+}
+
 buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
@@ -67,13 +78,14 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         mavenLocal()
     }
 }
 
 dependencies {
-    implementation('org.smartregister:opensrp-client-core:1.11.5-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-core:1.18.0-MOH-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'
@@ -84,11 +96,14 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpmime'
     }
 
-    implementation('org.smartregister:opensrp-client-native-form:1.9.1-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-native-form:3.1.8-NACP-SNAPSHOT') {
         transitive = true
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'cardview-v7'
+        exclude group: 'org.smartregister', module: 'opensrp-client-simprints'
+        exclude group: 'io.ona.CircleProgressbar', module: 'lib'
+        exclude group: 'id.zelory', module: 'compressor'
     }
 
     implementation('org.smartregister:opensrp-client-configurable-views:1.1.5-SNAPSHOT@aar') {
@@ -107,6 +122,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'id.zelory:compressor:3.0.1'
+    implementation 'com.emredavarci:circleprogressbar:1.0.8-SNAPSHOT'
+    implementation 'net.zetetic:sqlcipher-android:4.5.4'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
